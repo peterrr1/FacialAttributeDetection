@@ -9,12 +9,13 @@ from torch.utils.data.sampler import SubsetRandomSampler
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
 import matplotlib.pyplot as plt
+from model import MobileNet
 
 PATH_TO_IMAGES = 'data/img_align_celeba'
 PATH_TO_LABELS = 'data/list_attr_celeba.csv'
 
 class ImageLoader(Dataset):
-    def __init__(self, data_path, label_path, img_size=(313,256)):
+    def __init__(self, data_path, label_path, img_size=(224,224)):
 
         if img_size[0] < 224 or img_size[1] < 224:
             print('Error: MobileNet requires at least 224 pixels on height and width')
@@ -69,12 +70,18 @@ if __name__ == '__main__':
     valid_split = int(len(indices) * 0.9)
 
     # test split is 10%
-    train_idx, valid_idx, test_idx = indices[:train_split], indices[train_split:valid_split], indices[valid_split:]
+    train_idx, valid_idx, test_idx = indices[:500], indices[train_split:valid_split], indices[valid_split:]
 
     train_sampler = SubsetRandomSampler(train_idx)
     valid_sampler = SubsetRandomSampler(valid_idx)
     test_sampler = SubsetRandomSampler(test_idx)
 
-    train_data = DataLoader(dataset,batch_size=64, sampler=train_sampler)
+    train_data = DataLoader(dataset,batch_size=16, sampler=train_sampler)
     valid_data = DataLoader(dataset, sampler=valid_sampler)
     test_data = DataLoader(dataset, sampler=test_sampler)
+
+    model = MobileNet()
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    loss_fn = torch.nn.CrossEntropyLoss()
+    img, lab = dataset[0]
+    model.fit(train_data, optimizer, loss_fn, 2)
