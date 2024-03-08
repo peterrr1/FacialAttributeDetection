@@ -25,3 +25,9 @@ A különbség a többi konvolúciós neurális hálóhoz képest, hogy nem stan
 
 ### 6.1.	Depthwise Separable Convolution
 A Depthwise Separable konvolúció tulajdonképpen egy konvolúció felbontása depthwise és pointwise konvolúciókra. A depthwise konvolúció egy filtert alkalmaz minden bemeneti csatornán, ezáltal a kimeneti csatornák száma megegyezik a bemeneti csatornák számával. Ezután a pointwise konvolúció egy 1x1-es filtert alkalmaz, hogy kombinálja a depthwise konvolúció kimenetét [1].  
+
+## Irodalomjegyzék
+
+[1]	A. G. Howard, M. Zhu, B. Chen, D. Kalenichenko, W. Wang, T. Weyand, M. Andreetto, H. Adam. MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications
+
+[2]	K. Kärkkäinen, J. Joo. FairFace: Face Attribute Dataset for Balanced Race, Gender, and Age
