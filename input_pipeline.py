@@ -59,6 +59,7 @@ class ImageLoader(Dataset):
     def get_attribute_names_from_csv(self):
         return open(self.label_path).readlines()[0].split(',')[1:]
 
+
 if __name__ == '__main__':
     dataset = ImageLoader(PATH_TO_IMAGES, PATH_TO_LABELS)
 
@@ -70,18 +71,17 @@ if __name__ == '__main__':
     valid_split = int(len(indices) * 0.9)
 
     # test split is 10%
-    train_idx, valid_idx, test_idx = indices[:500], indices[train_split:valid_split], indices[valid_split:]
+    train_idx, valid_idx, test_idx = indices[:train_split], indices[train_split:valid_split], indices[valid_split:]
 
     train_sampler = SubsetRandomSampler(train_idx)
     valid_sampler = SubsetRandomSampler(valid_idx)
     test_sampler = SubsetRandomSampler(test_idx)
 
-    train_data = DataLoader(dataset,batch_size=16, sampler=train_sampler)
+    train_data = DataLoader(dataset, batch_size=32, sampler=train_sampler)
     valid_data = DataLoader(dataset, sampler=valid_sampler)
     test_data = DataLoader(dataset, sampler=test_sampler)
 
     model = MobileNet()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-    loss_fn = torch.nn.CrossEntropyLoss()
-    img, lab = dataset[0]
-    model.fit(train_data, optimizer, loss_fn, 2)
+    loss_fn = torch.nn.BCEWithLogitsLoss()
+    model.fit(train_data, optimizer, loss_fn, 5)
