@@ -3,22 +3,23 @@ from PIL import Image
 import sys
 import pandas as pd
 import torch
+import torchvision
 from torchvision.transforms import v2
 from torchvision import tv_tensors
 from torch.utils.data.sampler import SubsetRandomSampler
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
 import matplotlib.pyplot as plt
+import sklearn.metrics as metrics
+import seaborn as sns
 from model import MobileNet
 
 PATH_TO_IMAGES = 'data/img_align_celeba'
 PATH_TO_LABELS = 'data/list_attr_celeba.csv'
 
-class ImageLoader(Dataset):
-    def __init__(self, data_path, label_path, img_size=(224,224)):
 
-        if img_size[0] < 224 or img_size[1] < 224:
-            print('Error: MobileNet requires at least 224 pixels on height and width')
+class ImageLoader(Dataset):
+    def __init__(self, data_path, label_path, img_size=(234, 234)):
 
         self.data_path = data_path
         self.label_path = label_path
@@ -28,6 +29,7 @@ class ImageLoader(Dataset):
 
         self.transform = v2.Compose([
             v2.Resize(size=img_size),
+            v2.CenterCrop(224),
             v2.ToImage(),
             v2.ToDtype(torch.float32, scale=True),
             # Normalization for pretrained mobilenet: mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]
@@ -60,8 +62,8 @@ class ImageLoader(Dataset):
         return open(self.label_path).readlines()[0].split(',')[1:]
 
 
-if __name__ == '__main__':
-    dataset = ImageLoader(PATH_TO_IMAGES, PATH_TO_LABELS)
+
+def create_dataset_split(dataset, batch_size=64):
 
     indices = list(range(len(dataset)))
     # train split is 70%
@@ -77,11 +79,23 @@ if __name__ == '__main__':
     valid_sampler = SubsetRandomSampler(valid_idx)
     test_sampler = SubsetRandomSampler(test_idx)
 
-    train_data = DataLoader(dataset, batch_size=32, sampler=train_sampler)
-    valid_data = DataLoader(dataset, sampler=valid_sampler)
-    test_data = DataLoader(dataset, sampler=test_sampler)
+    train_data = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler)
+    valid_data = DataLoader(dataset, batch_size=batch_size, sampler=valid_sampler)
+    test_data = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
+
+    return train_data, valid_data, test_data
+
+
+
+
+if __name__ == '__main__':
+    dataset = ImageLoader(PATH_TO_IMAGES, PATH_TO_LABELS)
+    train_data, valid_data, test_data = create_dataset_split(dataset)
 
     model = MobileNet()
+    model.eval()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     loss_fn = torch.nn.BCEWithLogitsLoss()
-    model.fit(train_data, optimizer, loss_fn, 5)
+    #model.fit(train_data, optimizer, loss_fn, 5)
+
+    
