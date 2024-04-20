@@ -1,6 +1,5 @@
 import torch
 from torch import nn
-from evaluation_metrics import calc_evaluation_metrics
 
 def conv_block(in_ch, out_ch, stride):
     return (
@@ -84,7 +83,7 @@ class MobileNet(nn.Module):
                 batch_acc = (acc / (len(images) * labels.shape[1])) * 100.
 
                 # Measure model performance for every batch
-                calc_evaluation_metrics(labels.cpu().detach().numpy(), result.cpu().detach().numpy(), epoch, i)
+                #calc_evaluation_metrics(labels.cpu().detach().numpy(), result.cpu().detach().numpy(), epoch, i)
 
             epoch_accuracy /= len(train_data)
             epoch_loss /= len(train_data)

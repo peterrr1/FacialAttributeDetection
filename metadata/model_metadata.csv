@@ -1,0 +1,4 @@
+model_id,num_of_head_layers,batch_size,num_epochs,loss_fn,optimizer,learning_rate,threshold
+MOBILE_NET_V2_1,10,128,2,BCEWithLogitsLoss,Adam,0.001,0.5
+MOBILE_NET_V2_2,6,128,2,BCEWithLogitsLoss,Adam,0.001,0.5
+MOBILE_NET_V2_3,2,128,2,BCEWithLogitsLoss,Adam,0.001,0.5
