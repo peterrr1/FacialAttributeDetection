@@ -52,7 +52,7 @@ def get_prediction(image_bytes):
 def predict(file):
     image_bytes = file.read()
     sigmoid = torch.nn.Sigmoid()
-    result = sigmoid(get_prediction(image_bytes=image_bytes)) > 0.35
+    result = sigmoid(get_prediction(image_bytes=image_bytes)) > 0.5
     indices = torch.nonzero(result).tolist()
     predictions = list()
     for i in indices:
