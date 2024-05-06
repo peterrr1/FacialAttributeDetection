@@ -16,6 +16,8 @@ class MetricSaver():
         a string representing the path to the class-wise accuracy CSV file
     path_to_validation_scores : str
         a string representing the path to the validation scores CSV file
+    path_to_threshold_values : str
+        a string representing the path to the threshold values CSV file
 
     Methods
     -------
@@ -31,6 +33,10 @@ class MetricSaver():
         Creates a new CSV file for validation scores if it doesn't already exist.
     save_validation_scores(model_id, epoch, *args):
         Appends a row of validation scores to the validation scores CSV file.
+    create_threshold_values_csv(filename, *args):
+        Creates a new CSV file for threshold values if it doesn't already exist.
+    save_threshold_values(model_id, epoch, *args):
+        Appends a row of threshold values to the threshold values CSV file.
     """
 
     def __init__(self, path):
@@ -39,8 +45,8 @@ class MetricSaver():
         self.path_to_metadata = ""
         self.path_to_class_wise_accuracy = ""
         self.path_to_validation_scores = ""
-
-
+        self.path_to_threshold_values = ""
+        self.path_to_test_scores = ""
 
 
     def create_model_metadata_csv(self, filename, header):
@@ -113,4 +119,51 @@ class MetricSaver():
             with open(self.path_to_validation_scores, mode='a') as validation_scores_file:
                 validation_scores_writer = csv.writer(validation_scores_file, delimiter=',')
                 validation_scores_writer.writerow([model_id, epoch, *args])
+
+    
+
+    def create_threshold_values_csv(self, filename, *args):
+        self.path_to_threshold_values = os.path.join(self.metrics_dir, filename)
+
+        if os.path.isfile(self.path_to_threshold_values) is not True:
+            print(f'Creating {filename}')
+
+            with open(self.path_to_threshold_values, mode='w') as threshold_values_file:
+                threshold_values_writer = csv.writer(threshold_values_file, delimiter=',')
+                threshold_values_writer.writerow(['model_id', 'epoch', *args])
+        else:
+            print(f'{filename} already exists.')
+
+
+    def save_threshold_values(self, model_id, epoch, *args):
+        if os.path.isfile(self.path_to_threshold_values) is True:
+            print('Saving threshold values...')
+
+            with open(self.path_to_threshold_values, mode='a') as threshold_values_file:
+                threshold_values_writer = csv.writer(threshold_values_file, delimiter=',')
+                threshold_values_writer.writerow([model_id, epoch, *args])
+
+
+    """ TODO: check
+    def create_test_scores_csv(self, filename, header):
+        self.path_to_test_scores = os.path.join(self.metrics_dir, filename)
+
+        if os.path.isfile(self.path_to_test_scores) is not True:
+            print(f'Creating {filename}')
+
+            with open(self.path_to_test_scores, mode='w') as test_scores_file:
+                test_scores_writer = csv.writer(test_scores_file, delimiter=',')
+                test_scores_writer.writerow(header)
+        else:
+            print(f'{filename} already exists.')
+
+    
+    def save_test_scores(self, model_id, epoch, *args):
+        if os.path.isfile(self.path_to_test_scores) is True:
+            print('Saving test scores...')
+
+            with open(self.path_to_test_scores, mode='a') as test_scores_file:
+                test_scores_writer = csv.writer(test_scores_file, delimiter=',')
+                test_scores_writer.writerow([model_id, epoch, *args])
+    """
 # Path: data_manager/manage_csv.py

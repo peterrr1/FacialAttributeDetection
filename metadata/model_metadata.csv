@@ -1,4 +1,7 @@
-model_id,num_of_head_layers,batch_size,num_epochs,loss_fn,optimizer,learning_rate,threshold
-MOBILE_NET_V2_1,10,128,2,BCEWithLogitsLoss,Adam,0.001,0.5
-MOBILE_NET_V2_2,6,128,2,BCEWithLogitsLoss,Adam,0.001,0.5
-MOBILE_NET_V2_3,2,128,2,BCEWithLogitsLoss,Adam,0.001,0.5
+model_id,num_of_head_layers,batch_size,num_epochs,loss_fn,optimizer,learning_rate,threshold,weight_decay
+MOBILE_NET_V2_1,10,128,2,BCEWithLogitsLoss,Adam,0.001,0.5,0
+MOBILE_NET_V2_2,6,128,2,BCEWithLogitsLoss,Adam,0.001,0.5,0
+MOBILE_NET_V2_3,2,128,2,BCEWithLogitsLoss,Adam,0.001,0.5,0
+MOBILE_NET_V2_4,6,128,2,BCEWithLogitsLoss,AdamW,0.001,0.6,0.01
+MOBILE_NET_V2_5,2,128,2,BCEWithLogitsLoss,AdamW,0.001,0.5,0.01
+MOBILE_NET_V2_5,2,128,2,BCEWithLogitsLoss,AdamW,0.001,0.5,0.01

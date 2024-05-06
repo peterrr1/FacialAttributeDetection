@@ -80,7 +80,7 @@ def eval_scores(y_true, y_pred, loss, print_out=False, epoch=0, batch=0):
     label_wise_accuracy = label_wise_accuracy_score(y_true, y_pred)
 
     if print_out:
-        print_eval_scores(f1_score, recall, precision, hamming_loss, ham_score, partial_accuracy, label_wise_accuracy, loss, epoch + 1, batch + 1)
+        print_eval_scores(f1_score, recall, precision, hamming_loss, ham_score, partial_accuracy, label_wise_accuracy, loss, epoch, batch + 1)
 
     return (f1_score, recall, precision, hamming_loss, ham_score, partial_accuracy, label_wise_accuracy)
 

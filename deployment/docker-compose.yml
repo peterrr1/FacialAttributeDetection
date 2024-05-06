@@ -1,0 +1,13 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile.api
+    image: react-flask-app-api
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile.client
+    image: react-flask-app-client
+    ports:
+      - "3000:80"
