@@ -1,33 +1,27 @@
 import './App.css';
-import axios from 'axios'
 
 function App() {
 
   function handleUpload(e) {
 
     e.preventDefault();
-    console.log(e.target[0].files[0]);
-    console.log(e.target[0].files);
 
     const formData = new FormData();
-    formData.append('files[]', e.target[0].files[0]);
+    formData.append('files[]', e.target.files[0]);
 
-    const Upload = async() => {
-      await fetch('/api/upload', {
+
+    fetch('/api/upload', {
         method: 'POST',
         body: formData
       }).then(res => {
         res.json().then(res => {console.log(res)})
       })
-    }
-    Upload();
   }
 
   return (
     <div className="App">
       <form>
-          <input id="image" type="file" name="image" />
-          <button onClick={handleUpload} type="submit" value="Submit">Submit</button>
+          <input onChange={handleUpload} type="file" name="image" />
         </form>
     </div>
   )
